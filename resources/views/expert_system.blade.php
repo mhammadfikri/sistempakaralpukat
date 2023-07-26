@@ -59,9 +59,9 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
                                 @if ($item->hasMedia('images'))
-                                <img src="{{ $item->getMedia('images')[0]->getUrl() }}" alt="{{ $item->name }}" style="max-width: 100px;">
+                                {{ $loop->iteration }} <img src="{{ $item->getMedia('images')[0]->getUrl() }}" alt="{{ $item->name }}" style="max-width: 100px;">
                                 @else
-                                  <p>No image available</p>
+                                {{ $loop->iteration }} No image available <br>
                                 @endif
                                 <td>
                                   <div class="form-check">
