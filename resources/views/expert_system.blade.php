@@ -49,6 +49,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Evidence</th>
+                                <th>Gambar</th>
                                 <th>Pilih</th>
                             </tr>
                         </thead>
@@ -57,6 +58,11 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->name }}</td>
+                                @if ($item->hasMedia('images'))
+                                <img src="{{ $item->getMedia('images')[0]->getUrl() }}" alt="{{ $item->name }}" style="max-width: 100px;">
+                                @else
+                                  <p>No image available</p>
+                                @endif
                                 <td>
                                   <div class="form-check">
                                     <input class="form-check-input @error('description') is-invalid @enderror" type="checkbox" name="evidence_id[]" value="{{ $item->id }}" id="flexCheckDefault">

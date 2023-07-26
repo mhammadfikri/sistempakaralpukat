@@ -38,15 +38,24 @@
                                 <th>No</th>
                                 <th>Code</th>
                                 <th>Evidence</th>
+                                <th>image</th>
                                 <th>Option</th>
                             </tr>
                         </thead>
                         <tbody>
+
                           @foreach ($evidence_data as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->code }}</td>
+                                @if ($item->hasMedia('images'))
+                                <img src="{{ $item->getMedia('images')[0]->getUrl() }}" alt="{{ $item->name }}" style="max-width: 100px;">
+                                  {{-- <img src="{{ $item->getFirstMediaUrl('images') }}" alt="{{ $item->name }}" style="max-width: 100px;"> --}}
+                                @else
+                                  <p>No image available</p>
+                                @endif
                                 <td>{{ $item->name }}</td>
+                                
                                 <td>
                                   <a href="{{ route('evidence.edit',$item->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-fw fa-edit"></i> Edit</a>
                                   <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalId{{ $item->id }}"><i class="fas fa-fw fa-trash"></i> Delete</button>

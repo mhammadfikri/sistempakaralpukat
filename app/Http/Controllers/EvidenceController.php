@@ -51,7 +51,7 @@ class EvidenceController extends Controller
             'name' => 'required|max:255'
         ]);
 
-        Evidence::create([
+        $evidence = Evidence::create([
             'code' => $request->code,
             'name' => $request->name,
         ]);
@@ -62,6 +62,13 @@ class EvidenceController extends Controller
                 'hypothesis_id' => $value->id,
                 'weight' => 0.1
             ]);
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Simpan gambar ke dalam collection 'images' pada model Evidence
+            $evidence->addMedia($image)->toMediaCollection('images');
         }
 
         return redirect()->route('evidence.index')->with('status','Data created succesfully!');
@@ -91,6 +98,7 @@ class EvidenceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $evidence = Evidence::findOrFail($id);
         $request->validate([
             'name' => 'required|max:255'
         ]);
@@ -99,7 +107,17 @@ class EvidenceController extends Controller
             ->update([
                 'name' => $request->name
             ]);
-            
+        
+            // Cek apakah ada file gambar yang diunggah
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+
+                // Hapus gambar lama jika ada
+                $evidence->clearMediaCollection('images');
+
+                // Upload gambar baru dan simpan ke media library
+                $evidence->addMedia($image)->toMediaCollection('images', 'public');
+            }
         return redirect()->route('evidence.index')->with('status','Data updated succesfully!');
     }
 
@@ -108,8 +126,20 @@ class EvidenceController extends Controller
      */
     public function destroy($id)
     {
-        Rule::where('evidence_id',$id)->delete();
-        Evidence::where('id',$id)->delete();
-        return redirect()->route('evidence.index')->with('status','Data deleted succesfully!');
+        $evidence = Evidence::findOrFail($id);
+
+        // Cek apakah media dengan nama 'images' ada sebelum mencoba menghapusnya
+        // if ($evidence->hasMedia('images')) {
+        //     // Hapus media 'images'
+        //     $evidence->deleteMedia('images');
+        // }
+
+        // Hapus relasi Rule terlebih dahulu, untuk mencegah constraint violation
+        Rule::where('evidence_id', $id)->delete();
+
+        // Hapus data Evidence
+        $evidence->delete();
+
+        return redirect()->route('evidence.index')->with('status', 'Data deleted successfully!');
     }
 }
