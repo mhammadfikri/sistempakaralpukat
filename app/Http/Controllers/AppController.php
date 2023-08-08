@@ -94,7 +94,7 @@ class AppController extends Controller
                 $diagnosis_result =$record['diagnosis_result'];
             }
         }
-
+        
         $data_result;
         $columns = array_column($data_result, 'diagnosis_result');
         array_multisort($columns, SORT_DESC, $data_result);
@@ -114,6 +114,7 @@ class AppController extends Controller
             'data_evidence' => $data_evidence_data,
             'data_diagnosis' => $data_name,
             'data_expert_value' => $diagnosis_result,
+            'hypothesis_data' => Hypothesis::find($data_id),
         ]);
     }
 

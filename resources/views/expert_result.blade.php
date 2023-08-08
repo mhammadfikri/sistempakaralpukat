@@ -48,6 +48,14 @@
                   <td>:</td>
                   <td>{{ $data_diagnosis }}</td>
                 </tr>
+                @if ($hypothesis_data->hasMedia('images'))
+                    <td><img src="{{ $hypothesis_data->getMedia('images')[0]->getUrl() }}"
+                        alt="{{ $hypothesis_data->name }}" style="max-width: 100px;"></td>
+                        @else
+                        <td>
+                         <p>No image available</p>
+                   </td>
+                @endif
                 <tr>
                   <td>Expert Value</td>
                   <td>:</td>
