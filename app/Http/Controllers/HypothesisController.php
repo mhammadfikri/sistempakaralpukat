@@ -55,7 +55,7 @@ class HypothesisController extends Controller
             'solution' => 'required',
         ]);
 
-        Hypothesis::create([
+        $hypothesis = Hypothesis::create([
             'code' => $request->code,
             'name' => $request->name,
             'weight' => $request->weight,
@@ -69,6 +69,13 @@ class HypothesisController extends Controller
                 'hypothesis_id' => Hypothesis::where('code', $request->code)->first()->id,
                 'weight' => 0.1
             ]);
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Simpan gambar ke dalam collection 'images' pada model Evidence
+            $hypothesis->addMedia($image)->toMediaCollection('images');
         }
 
         return redirect()->route('hypothesis.index')->with('status','Data created succesfully!');
@@ -98,6 +105,7 @@ class HypothesisController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $hypothesis = Hypothesis::findOrFail($id);
         $request->validate([
             'name' => 'required|max:255',
             'weight' => 'required',
@@ -112,6 +120,17 @@ class HypothesisController extends Controller
                 'description' => $request->description,
                 'solution' => $request->solution,
             ]);
+
+        // Cek apakah ada file gambar yang diunggah
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Hapus gambar lama jika ada
+            $hypothesis->clearMediaCollection('images');
+
+            // Upload gambar baru dan simpan ke media library
+            $hypothesis->addMedia($image)->toMediaCollection('images', 'public');
+        }    
             
         return redirect()->route('hypothesis.index')->with('status','Data updated succesfully!');
     }

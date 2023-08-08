@@ -26,7 +26,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Add Data</h6>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('hypothesis.update', $get_hypothesis->id) }}" method="post">
+                        <form action="{{ route('hypothesis.update', $get_hypothesis->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                             <div class="mb-3">
@@ -81,6 +81,15 @@
                                     {{ $message }}.
                                 </div>
                                 @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image</label>
+                                @if ($get_hypothesis->hasMedia('images'))
+                                  <img src="{{ $get_hypothesis->getFirstMediaUrl('images') }}" alt="{{ $get_hypothesis->name }}" style="max-width: 100px;">
+                                @else
+                                  <p>No image available</p>
+                                @endif
+                                <input type="file" name="image" class="form-control" id="image">
                             </div>
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
                         </form>

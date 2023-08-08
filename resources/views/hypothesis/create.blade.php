@@ -26,7 +26,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Add Data</h6>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('hypothesis.store') }}" method="post">
+                        <form action="{{ route('hypothesis.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="code" class="form-label">Code</label>
@@ -81,6 +81,7 @@
                                 </div>
                                 @enderror
                             </div>
+                            <input type="file" name="image" class="">
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
                         </form>
                     </div>

@@ -39,6 +39,7 @@
                                 <th>Code</th>
                                 <th>Hypothesis</th>
                                 <th>Weight</th>
+                                <th>Gambar</th>
                                 <th>Option</th>
                             </tr>
                         </thead>
@@ -49,6 +50,14 @@
                                 <td>{{ $item->code }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->weight }}</td>
+                                @if ($item->hasMedia('images'))
+                                <td><img src="{{ $item->getMedia('images')[0]->getUrl() }}"
+                                        alt="{{ $item->name }}" style="max-width: 100px;"></td>
+                                @else
+                                    <td>
+                                        <p>No image available</p>
+                                    </td>
+                                @endif
                                 <td>
                                   <a href="{{ route('hypothesis.edit',$item->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-fw fa-edit"></i> Edit</a>
                                   <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalId{{ $item->id }}"><i class="fas fa-fw fa-trash"></i> Delete</button>
