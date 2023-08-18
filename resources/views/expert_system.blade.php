@@ -57,9 +57,9 @@
                           @foreach ($evidence as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->name }}</td>
+                                <td style="font-size : 25px;">{{ $item->name }}</td>
                                 @if ($item->hasMedia('images'))
-                                <td> <img src="{{ $item->getMedia('images')[0]->getUrl() }}" alt="{{ $item->name }}" style="max-width: 100px;"></td>
+                                <td> <img src="{{ $item->getMedia('images')[0]->getUrl() }}" alt="{{ $item->name }}" style="max-width: 200px;"></td>
                                 @else
                                 <td> No image available </td>
                                 @endif
